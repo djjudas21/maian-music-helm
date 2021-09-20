@@ -4,10 +4,10 @@
 
 mysql:
   auth:
-    rootPassword: ""
+    rootPassword: maianmusic
     database: maianmusic
-    username: ""
-    password: ""
+    username: maianmusic
+    password: maianmusic
 
 replicaCount: 1
 
