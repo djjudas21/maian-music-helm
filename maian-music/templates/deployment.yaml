@@ -66,8 +66,20 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: media
+              mountPath: /media
+              readOnly: false
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+      - name: media
+        persistentVolumeClaim:
+          claimName: media
+      {{- end }}
       initContainers:
       - name: "{{ .Chart.Name }}-initdb"
         image: "groundnuty/k8s-wait-for:1.3"
