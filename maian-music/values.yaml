@@ -2,10 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+mysql:
+  auth:
+    rootPassword: ""
+    database: maianmusic
+    username: ""
+    password: ""
+
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: djjudas21/maian-music
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
