@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}-initdb
+  name: "{{ .Release.Name }}-initdb"
   labels:
-    {{- include "camerahub.labels" . | nindent 4 }}
+    {{- include "maian-music.labels" . | nindent 4 }}
 spec:
   template:
     metadata:
       labels:
-        {{- include "camerahub.selectorLabels" . | nindent 8 }}
+        {{- include "maian-music.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
       - name: "{{ .Chart.Name }}-wait-for-db"
