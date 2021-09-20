@@ -68,6 +68,13 @@ spec:
                   key: MM_DB_NAME
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      initContainers:
+      - name: "{{ .Chart.Name }}-initdb"
+        image: "groundnuty/k8s-wait-for:1.3"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+        - "job"
+        - "{{ .Release.Name }}-initdb"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
