@@ -1,6 +1,7 @@
 apiVersion: v2
 name: maian-music
-description: A Helm chart for Kubernetes
+description: Maian Music is a PHP application for selling digital and physical music
+home: https://www.maianmusic.com/
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,7 +16,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.1
+version: 0.1.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -27,3 +28,10 @@ dependencies:
 - name: mysql
   version: "8.8.7"
   repository: "https://charts.bitnami.com/bitnami"
+keywords:
+  - maian
+  - music
+sources:
+  - https://github.com/djjudas21/maian-music-helm
+maintainers:
+  - name: djjudas21
