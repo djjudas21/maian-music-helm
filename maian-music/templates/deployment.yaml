@@ -66,16 +66,26 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
-          {{- if .Values.persistence.enabled }}
           volumeMounts:
+            - mountPath: "/var/www/html/license.lic"
+                subPath: license.lic
+              name: ssh-key
+              readOnly: true
+          {{- if .Values.persistence.enabled }}
             - name: media
               mountPath: /media
               readOnly: false
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.persistence.enabled }}
       volumes:
+        - name: license
+          secret:
+            secretName: ssh-key
+            items:
+              - key: license.lic
+                path: license.lic
+      {{- if .Values.persistence.enabled }}
       - name: media
         persistentVolumeClaim:
           claimName: media
