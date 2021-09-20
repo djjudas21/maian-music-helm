@@ -72,8 +72,8 @@ spec:
               name: ssh-key
               readOnly: true
           {{- if .Values.persistence.enabled }}
-            - name: media
-              mountPath: /media
+            - name: secure
+              mountPath: /var/www/secure
               readOnly: false
           {{- end }}
           resources:
@@ -86,9 +86,9 @@ spec:
               - key: license.lic
                 path: license.lic
       {{- if .Values.persistence.enabled }}
-      - name: media
+      - name: secure
         persistentVolumeClaim:
-          claimName: media
+          claimName: secure
       {{- end }}
       initContainers:
       - name: "{{ .Chart.Name }}-initdb"
