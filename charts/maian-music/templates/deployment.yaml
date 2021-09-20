@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "maian-music.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "maian-music.selectorLabels" . | nindent 6 }}
@@ -49,33 +47,33 @@ spec:
             - name: MM_DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-secret
+                  name: "{{ .Release.Name }}-secret"
                   key: MM_DB_PASS
             - name: MM_DB_USER
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-config
+                  name: "{{ .Release.Name }}-config"
                   key: MM_DB_USER
             - name: MM_DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-config
+                  name: "{{ .Release.Name }}-config"
                   key: MM_DB_HOST
             - name: MM_DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-config
+                  name: "{{ .Release.Name }}-config"
                   key: MM_DB_NAME
           volumeMounts:
             - mountPath: "/var/www/html/license.lic"
                 subPath: license.lic
               name: ssh-key
               readOnly: true
-          {{- if .Values.persistence.enabled }}
+              {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
-          {{- end }}
+              {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -85,11 +83,11 @@ spec:
             items:
               - key: license.lic
                 path: license.lic
-      {{- if .Values.persistence.enabled }}
-      - name: secure
-        persistentVolumeClaim:
-          claimName: secure
-      {{- end }}
+        {{- if .Values.persistence.enabled }}
+        - name: secure
+          persistentVolumeClaim:
+            claimName: secure
+        {{- end }}
       initContainers:
       - name: "{{ .Chart.Name }}-initdb"
         image: "groundnuty/k8s-wait-for:1.3"
