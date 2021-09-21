@@ -65,9 +65,9 @@ spec:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
-            - mountPath: "/var/www/html/license.lic"
-                subPath: license.lic
-              name: ssh-key
+            - mountPath: /var/www/html/license.lic
+              subPath: license.lic
+              name: license
               readOnly: true
             {{- if .Values.persistence.enabled }}
             - name: secure
@@ -79,7 +79,7 @@ spec:
       volumes:
         - name: license
           secret:
-            secretName: ssh-key
+            secretName: {{ .Release.Name }}-license
             items:
               - key: license.lic
                 path: license.lic
