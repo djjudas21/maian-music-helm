@@ -69,11 +69,11 @@ spec:
                 subPath: license.lic
               name: ssh-key
               readOnly: true
-              {{- if .Values.persistence.enabled }}
+            {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
-              {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
