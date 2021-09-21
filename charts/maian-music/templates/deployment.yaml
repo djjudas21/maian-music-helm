@@ -47,22 +47,22 @@ spec:
             - name: MM_DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Release.Name }}-secret"
+                  name: {{ .Release.Name }}-secret
                   key: MM_DB_PASS
             - name: MM_DB_USER
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ .Release.Name }}-config"
+                  name: {{ .Release.Name }}-config
                   key: MM_DB_USER
             - name: MM_DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ .Release.Name }}-config"
+                  name: {{ .Release.Name }}-config
                   key: MM_DB_HOST
             - name: MM_DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: "{{ .Release.Name }}-config"
+                  name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
             - mountPath: "/var/www/html/license.lic"
