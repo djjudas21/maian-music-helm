@@ -69,7 +69,7 @@ spec:
               subPath: license.lic
               name: license
               readOnly: true
-            {{- if .Values.persistence.enabled }}
+          {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
@@ -83,11 +83,11 @@ spec:
             items:
               - key: license.lic
                 path: license.lic
-        {{- if .Values.persistence.enabled }}
-        - name: secure
-          persistentVolumeClaim:
-            claimName: secure
-        {{- end }}
+      {{- if .Values.persistence.enabled }}
+      - name: secure
+        persistentVolumeClaim:
+          claimName: secure
+      {{- end }}
       initContainers:
       - name: "{{ .Chart.Name }}-initdb"
         image: "groundnuty/k8s-wait-for:1.3"
