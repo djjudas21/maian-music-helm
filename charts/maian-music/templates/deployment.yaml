@@ -26,23 +26,21 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: fpm
+              containerPort: 9000
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: fpm
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: fpm
           env:
             - name: MM_DB_PASS
               valueFrom:
@@ -69,6 +67,8 @@ spec:
               subPath: license.lic
               name: license
               readOnly: true
+            - name: app
+              mountPath: /var/www/html
           {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
@@ -76,6 +76,37 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          # Important! After this container has started, the PHP files
+          # in our Docker image aren't in the shared volume. We need to
+          # get them into the shared volume.
+          #
+          # So, after the container has started, copy the PHP files from this
+          # container's local filesystem (/app -- added via the Docker image)
+          # to the shared volume, which is mounted at /var/www/html.
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
+        - name: {{ .Chart.Name }}-nginx
+          image: nginx:latest
+          volumeMounts:
+            - name: app
+              mountPath: /var/www/html
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
       volumes:
         - name: license
           secret:
@@ -83,6 +114,13 @@ spec:
             items:
               - key: license.lic
                 path: license.lic
+        # Create the shared files volume to be used in both pods
+        - name: app
+          emptyDir: {}
+        # Add the ConfigMap we declared above as a volume for the pod
+        - name: nginx-config-volume
+          configMap:
+            name: {{ .Release.Name }}
         {{- if .Values.persistence.enabled }}
         - name: secure
           persistentVolumeClaim:
