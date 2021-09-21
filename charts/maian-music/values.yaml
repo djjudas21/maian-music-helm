@@ -15,6 +15,7 @@ mysql:
       accessModes:
         - ReadWriteOnce
       size: 8Gi
+  initdbScriptsConfigMap: initdb
 
 replicaCount: 1
 
