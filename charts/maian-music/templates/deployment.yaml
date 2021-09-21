@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "maian-music.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "maian-music.selectorLabels" . | nindent 6 }}
@@ -67,21 +65,21 @@ spec:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
-            - mountPath: "/var/www/html/license.lic"
-                subPath: license.lic
-              name: ssh-key
+            - mountPath: /var/www/html/license.lic
+              subPath: license.lic
+              name: license
               readOnly: true
           {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
-          {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: license
           secret:
-            secretName: ssh-key
+            secretName: {{ .Release.Name }}-license
             items:
               - key: license.lic
                 path: license.lic
