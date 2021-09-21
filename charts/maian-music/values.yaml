@@ -8,6 +8,13 @@ mysql:
     database: maianmusic
     username: maianmusic
     password: maianmusic
+  primary:
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
 
 replicaCount: 1
 
@@ -66,7 +73,8 @@ ingress:
 persistence:
   enabled: false
   storageClass: ""
-  accessMode: ReadWriteOnce
+  accessModes:
+    - ReadWriteOnce
   size: 8Gi
 
 resources: {}

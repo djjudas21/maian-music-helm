@@ -22,7 +22,8 @@ spec:
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-        command: "/initdb.sh"
+        command: 
+          - "/initdb.sh"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
           - name: MM_DB_PASS
@@ -61,3 +62,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      restartPolicy: OnFailure

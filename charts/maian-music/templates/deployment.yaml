@@ -73,7 +73,7 @@ spec:
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
-            {{- end }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -83,11 +83,11 @@ spec:
             items:
               - key: license.lic
                 path: license.lic
-      {{- if .Values.persistence.enabled }}
-      - name: secure
-        persistentVolumeClaim:
-          claimName: secure
-      {{- end }}
+        {{- if .Values.persistence.enabled }}
+        - name: secure
+          persistentVolumeClaim:
+            claimName: secure
+        {{- end }}
       initContainers:
       - name: "{{ .Chart.Name }}-initdb"
         image: "groundnuty/k8s-wait-for:1.3"
