@@ -120,7 +120,7 @@ spec:
         # Add the ConfigMap we declared above as a volume for the pod
         - name: nginx-config-volume
           configMap:
-            name: {{ .Release.Name }}
+            name: {{ .Release.Name }}-nginx-config
         {{- if .Values.persistence.enabled }}
         - name: secure
           persistentVolumeClaim:
