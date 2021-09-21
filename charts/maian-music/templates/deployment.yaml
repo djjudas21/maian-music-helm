@@ -26,7 +26,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-php
+        - name: php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -87,7 +87,7 @@ spec:
             postStart:
               exec:
                 command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
-        - name: {{ .Chart.Name }}-nginx
+        - name: nginx
           image: nginx:latest
           volumeMounts:
             - name: app
