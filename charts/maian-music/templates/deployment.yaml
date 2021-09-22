@@ -63,9 +63,9 @@ spec:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
-            - mountPath: /var/www/html/license.lic
-              subPath: license.lic
-              name: license
+            - mountPath: /var/www/html/licence.lic
+              subPath: licence.lic
+              name: licence
               readOnly: true
             - name: app
               mountPath: /var/www/html
@@ -108,12 +108,12 @@ spec:
               path: /
               port: http
       volumes:
-        - name: license
+        - name: licence
           secret:
-            secretName: {{ .Release.Name }}-license
+            secretName: {{ .Release.Name }}-licence
             items:
-              - key: license.lic
-                path: license.lic
+              - key: licence.lic
+                path: licence.lic
         # Create the shared files volume to be used in both pods
         - name: app
           emptyDir: {}

@@ -96,7 +96,7 @@ tolerations: []
 
 affinity: {}
 
-license: |
+licence: |
   MSWorld Free Licence Key File
   ----------------------------------
 
