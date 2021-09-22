@@ -2,6 +2,24 @@
 
 Maian Music is a PHP application for selling digital and physical music
 
+## Installation
+
+Add the Helm repo:
+
+```sh
+helm repo add maian-music https://djjudas21.github.io/maian-music-helm/
+helm repo update
+```
+
+Customise your own copy of [`values.yaml`](https://github.com/djjudas21/maian-music-helm/blob/main/charts/maian-music/values.yaml).
+You can just delete anything you don't want to override.
+
+Finally, install Maian Music into your Kubernetes cluster by doing:
+
+```sh
+helm upgrade --install -n maian-music maian-music -f myvalues.yaml --create-namespace maian-music/maian-music
+```
+
 ## Manual post install steps
 
 After deployment, style sheets will be broken because the Maian Music app doesn't know its own URL.
