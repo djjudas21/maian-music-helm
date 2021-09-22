@@ -19,6 +19,10 @@ mysql:
 
 replicaCount: 1
 
+# Admin password for Maian Music
+adminUser: admin
+adminPassword: admin
+
 image:
   repository: djjudas21/maian-music
   pullPolicy: IfNotPresent

@@ -47,6 +47,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secret
                   key: MM_DB_PASS
+            - name: MM_ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: MM_ADMIN_PASS
             - name: MM_DB_USER
               valueFrom:
                 configMapKeyRef:
@@ -57,6 +62,11 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_HOST
+            - name: MM_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MM_ADMIN_USER
             - name: MM_DB_NAME
               valueFrom:
                 configMapKeyRef:
