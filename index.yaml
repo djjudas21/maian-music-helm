@@ -1,0 +1,26 @@
+apiVersion: v1
+entries:
+  maian-music:
+  - apiVersion: v2
+    appVersion: "2.9"
+    created: "2021-09-22T14:31:02.57577229Z"
+    dependencies:
+    - name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.8.7
+    description: Maian Music is a PHP application for selling digital and physical music
+    digest: 3e76a9b5a1819c8d69b88c19bfb5fcf974a7c4fed7fcbdb1da656197799c4fbf
+    home: https://www.maianmusic.com/
+    keywords:
+    - maian
+    - music
+    maintainers:
+    - name: djjudas21
+    name: maian-music
+    sources:
+    - https://github.com/djjudas21/maian-music-helm
+    type: application
+    urls:
+    - https://github.com/djjudas21/maian-music-helm/releases/download/maian-music-0.2.0/maian-music-0.2.0.tgz
+    version: 0.2.0
+generated: "2021-09-22T14:31:02.35110245Z"
