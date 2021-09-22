@@ -8,8 +8,20 @@ mysql:
     database: maianmusic
     username: maianmusic
     password: maianmusic
+  primary:
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+  initdbScriptsConfigMap: initdb
 
 replicaCount: 1
+
+# Admin password for Maian Music
+adminUser: admin
+adminPassword: admin
 
 image:
   repository: djjudas21/maian-music
@@ -57,7 +69,7 @@ ingress:
     - host: chart-example.local
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -66,7 +78,8 @@ ingress:
 persistence:
   enabled: false
   storageClass: ""
-  accessMode: ReadWriteOnce
+  accessModes:
+    - ReadWriteOnce
   size: 8Gi
 
 resources: {}
@@ -87,7 +100,7 @@ tolerations: []
 
 affinity: {}
 
-license: |
+licence: |
   MSWorld Free Licence Key File
   ----------------------------------
 

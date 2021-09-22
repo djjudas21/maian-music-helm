@@ -1,4 +1,5 @@
-1. Get the application URL by running these commands:
+Maian Music is now running at:
+
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}
@@ -20,3 +21,14 @@
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
+
+BUT WAIT!
+
+After deployment, style sheets will be broken because the Maian Music app doesn't know its own URL.
+
+* Browse to the URL where you deployed Maian Music and add /admin/index.php?p=settings` to the end of the path
+* Scroll down to Store HTTP Path and enter the fully qualified path to your site, taking care to specify http:// or https:// as appropriate
+* Set Server Path to Secure Folder as /var/www/secure
+* Click Update
+
+You can now begin using Maian Music.

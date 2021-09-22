@@ -26,7 +26,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: php
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -49,6 +49,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secret
                   key: MM_DB_PASS
+            - name: MM_ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: MM_ADMIN_PASS
             - name: MM_DB_USER
               valueFrom:
                 configMapKeyRef:
@@ -59,42 +64,40 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_HOST
+            - name: MM_ADMIN_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MM_ADMIN_USER
             - name: MM_DB_NAME
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
-            - mountPath: /var/www/html/license.lic
-              subPath: license.lic
-              name: license
+            - mountPath: /app/licence.lic
+              subPath: licence.lic
+              name: licence
               readOnly: true
           {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
               readOnly: false
-            {{- end }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: license
+        - name: licence
           secret:
-            secretName: {{ .Release.Name }}-license
+            secretName: {{ .Release.Name }}-licence
             items:
-              - key: license.lic
-                path: license.lic
-      {{- if .Values.persistence.enabled }}
-      - name: secure
-        persistentVolumeClaim:
-          claimName: secure
-      {{- end }}
-      initContainers:
-      - name: "{{ .Chart.Name }}-initdb"
-        image: "groundnuty/k8s-wait-for:1.3"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        args:
-        - "job"
-        - "{{ .Release.Name }}-initdb"
+              - key: licence.lic
+                path: licence.lic
+        {{- if .Values.persistence.enabled }}
+        - name: secure
+          persistentVolumeClaim:
+            claimName: secure
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
