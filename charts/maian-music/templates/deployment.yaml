@@ -73,12 +73,13 @@ spec:
                   name: {{ .Release.Name }}-config
                   key: MM_DB_NAME
           volumeMounts:
-            - mountPath: /var/www/html/licence.lic
+            - mountPath: /app/licence.lic
               subPath: licence.lic
               name: licence
               readOnly: true
             - name: app
               mountPath: /var/www/html
+              readOnly: false
           {{- if .Values.persistence.enabled }}
             - name: secure
               mountPath: /var/www/secure
